@@ -1,0 +1,20 @@
+{
+  "name": "stand-in",
+  "version": "0.0.1",
+  "description": "Method replacement and testing utility",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm test"
+  },
+  "keywords": [
+    "testing",
+    "proxy",
+    "spy",
+    "replace"
+  ],
+  "author": "Adam Bretz",
+  "license": "ISC",
+  "devDependencies": {
+    "lab": "^4.3.0"
+  }
+}
