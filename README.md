@@ -1,5 +1,6 @@
 # stand-in
 Method replacement and testing utility
+
 [![Build Status](https://travis-ci.org/arb/stand-in.svg?branch=master)](https://travis-ci.org/arb/stand-in)
 
 ## Description
