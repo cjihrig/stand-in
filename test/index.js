@@ -2,7 +2,7 @@
 
 var Lab = require('lab');
 var lab = exports.lab = Lab.script();
-var standin = require('../');
+var StandIn = require('../');
 
 // Declare test aliases
 var describe = lab.describe;
@@ -17,7 +17,7 @@ describe('stand-in', function () {
 
     it('replaces a defined method', function (done) {
 
-      var log = standin.replace(console, 'log', function (value) {
+      var log = StandIn.replace(console, 'log', function (value) {
 
         expect(value).to.equal('test');
         log.restore();
@@ -31,11 +31,12 @@ describe('stand-in', function () {
 
       var foo = {
         bar: function (valueone, valuetwo) {
+
           console.log('%s,%s');
         }
       }
 
-      var replace = standin.replace(foo, 'bar', function (valueone, valuetwo) {
+      var replace = StandIn.replace(foo, 'bar', function (valueone, valuetwo) {
 
         expect(valueone).to.equal(1);
         expect(valuetwo).to.equal(2);
@@ -56,11 +57,12 @@ describe('stand-in', function () {
       var foo = {
         value: 55,
         bar: function (valueone, valuetwo) {
+
           console.log('%s,%s');
         }
       }
 
-      var replace = standin.replace(foo, 'bar', function (valueone, valuetwo) {
+      var replace = StandIn.replace(foo, 'bar', function (valueone, valuetwo) {
 
         expect(valueone).to.equal(1);
         expect(valuetwo).to.equal(2);
@@ -77,6 +79,46 @@ describe('stand-in', function () {
 
     });
 
+    it('provides a mechanism to use the original method', function (done) {
+
+      var foo = {
+        bar: function () {
+          return false;
+        }
+      };
+
+      var replace = StandIn.replace(foo, 'bar', function () {
+
+        expect(replace.original()).to.equal(false);
+        replace.restore();
+        done();
+      });
+
+      foo.bar(1);
+
+    });
+
+    it('prevents developers for blowing away the original function', function (done) {
+
+      var foo = {
+        bar: function () {
+          
+          return false;
+        }
+      };
+
+      var replace = StandIn.replace(foo, 'bar', function () {
+
+        delete replace.original;
+        replace.original = undefined;
+        expect(replace.original()).to.equal(false);
+        replace.restore();
+        done();
+      });
+
+      foo.bar(1);
+
+    });
 
   });
 
@@ -86,7 +128,7 @@ describe('stand-in', function () {
 
       expect(function() {
 
-        standin.replace(null)
+        StandIn.replace(null)
       }).to.throw('obj must be defined');
 
       done();
@@ -96,7 +138,7 @@ describe('stand-in', function () {
 
       expect(function() {
 
-        standin.replace(1)
+        StandIn.replace(1)
       }).to.throw('obj must be an object');
 
       done();
@@ -106,7 +148,7 @@ describe('stand-in', function () {
 
       expect(function() {
 
-        standin.replace(console, 'foo');
+        StandIn.replace(console, 'foo');
       }).to.throw('method must be a valid function of obj');
 
 
@@ -120,7 +162,7 @@ describe('stand-in', function () {
 
       expect(function() {
 
-        standin.replace(foo, 'bar');
+        StandIn.replace(foo, 'bar');
       }).to.throw('method must be a valid function of obj');
 
       done();
@@ -133,7 +175,7 @@ describe('stand-in', function () {
 
       expect(function() {
 
-        standin.replace(foo, 'bar', 1);
+        StandIn.replace(foo, 'bar', 1);
       }).to.throw('fn must be a function object');
 
       done();
@@ -145,10 +187,10 @@ describe('stand-in', function () {
 
     it('throws an error if you try to replace without restoring on the same object', function (done) {
 
-      var log = standin.replace(console, 'log', function (value) {});
+      var log = StandIn.replace(console, 'log', function (value) {});
 
       expect(function () {
-        var log2 = standin.replace(console, 'log', function (value) {});
+        var log2 = StandIn.replace(console, 'log', function (value) {});
       }).to.throw('there is already a replace for "obj"[log]');
 
       log.restore();
@@ -166,7 +208,7 @@ describe('stand-in', function () {
         };
         x.value = i;
 
-        var foo = standin.replace(x, 'foo', function (value) {
+        var foo = StandIn.replace(x, 'foo', function (value) {
 
           expect(value).to.equal(i);
           expect(this.value).to.equal(i);

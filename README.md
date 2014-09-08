@@ -21,8 +21,9 @@ var log = standin.replace(console, 'log', function (value) {
 console.log('test data');
 ```
 
-- `replace(obj, method, fn)` - replaces `obj[method]` with `fn`.
-- `restore` - restores the original `obj[method]` to the previous function. Generally, this will restore the method back to the initial value.
+- `replace(obj, method, fn)` - replaces `obj[method]` with `fn`. Returns a `standin` object:
+  - `restore()` - restores the original `obj[method]` to the previous function. Generally, this will restore the method back to the initial value.
+  - `original` - a handle to the original method in case you need to conditionally call it.
 
 ## Note
 
