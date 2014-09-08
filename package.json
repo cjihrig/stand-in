@@ -1,6 +1,6 @@
 {
   "name": "stand-in",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Method replacement and testing utility",
   "main": "index.js",
   "scripts": {
@@ -8,9 +8,9 @@
   },
   "keywords": [
     "testing",
-    "proxy",
+    "proxy-method",
     "spy",
-    "function replace"
+    "function-replace"
   ],
   "author": "Adam Bretz",
   "license": "ISC",
