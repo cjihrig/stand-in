@@ -1,7 +1,11 @@
 {
   "name": "stand-in",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Method replacement and testing utility",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/arb/stand-in.git"
+  },
   "main": "index.js",
   "scripts": {
     "test": "node node_modules/.bin/lab -c -t 100"
