@@ -50,6 +50,34 @@ describe('stand-in', function () {
       foo.bar(1,2);
 
     });
+
+    it('uses the correct this context', function (done) {
+
+      var foo = {
+        value: 55,
+        bar: function (valueone, valuetwo) {
+          console.log('%s,%s');
+        }
+      }
+
+      var replace = standin.replace(foo, 'bar', function (valueone, valuetwo) {
+
+        expect(valueone).to.equal(1);
+        expect(valuetwo).to.equal(2);
+        expect(this.value).to.equal(55);
+
+        replace.restore();
+
+        expect(foo.bar).to.deep.equal(foo.bar);
+        done();
+
+      });
+
+      foo.bar(1,2);
+
+    });
+
+
   });
 
   describe('assertions', function () {
