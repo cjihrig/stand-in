@@ -163,10 +163,13 @@ describe('stand-in', function () {
         var x = {};
         x.foo = function (value) {
           console.log(value);
-        }
+        };
+        x.value = i;
+
         var foo = standin.replace(x, 'foo', function (value) {
 
           expect(value).to.equal(i);
+          expect(this.value).to.equal(i);
           foo.restore();
         });
         x.foo(i);

@@ -8,7 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "node node_modules/.bin/lab -c -t 100"
+    "test": "node node_modules/.bin/lab -cv -t 100"
   },
   "keywords": [
     "testing",
