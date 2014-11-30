@@ -11,7 +11,7 @@ var describe = lab.describe;
 var it = lab.it;
 var expect = Lab.expect;
 
-describe('test one', function() {
+describe('test one', function () {
 
   it('logs an error opening a file', function (done) {
 
@@ -43,11 +43,11 @@ describe('test one', function() {
             console.error(error);
           }
           else {
-            console.log(data+'');
+            console.log(data + '');
           }
         });
       }
-    }
+    };
 
     logger.getLog();
   });

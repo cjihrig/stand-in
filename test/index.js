@@ -1,5 +1,6 @@
 //Load modules
 
+var Code = require('code');
 var Lab = require('lab');
 var lab = exports.lab = Lab.script();
 var StandIn = require('../');
@@ -7,9 +8,7 @@ var StandIn = require('../');
 // Declare test aliases
 var describe = lab.describe;
 var it = lab.it;
-var before = lab.before;
-var after = lab.after;
-var expect = Lab.expect;
+var expect = Code.expect;
 
 describe('stand-in', function () {
 
@@ -17,7 +16,7 @@ describe('stand-in', function () {
 
     it('replaces a defined method', function (done) {
 
-      var log = StandIn.replace(console, 'log', function (value) {
+      var log = StandIn.replace(console, 'log', function (stand, value) {
 
         expect(value).to.equal('test');
         log.restore();
@@ -32,11 +31,11 @@ describe('stand-in', function () {
       var foo = {
         bar: function (valueone, valuetwo) {
 
-          console.log('%s,%s');
+          console.log('%s, %s');
         }
-      }
+      };
 
-      var replace = StandIn.replace(foo, 'bar', function (valueone, valuetwo) {
+      var replace = StandIn.replace(foo, 'bar', function (stand, valueone, valuetwo) {
 
         expect(valueone).to.equal(1);
         expect(valuetwo).to.equal(2);
@@ -60,9 +59,9 @@ describe('stand-in', function () {
 
           console.log('%s,%s');
         }
-      }
+      };
 
-      var replace = StandIn.replace(foo, 'bar', function (valueone, valuetwo) {
+      var replace = StandIn.replace(foo, 'bar', function (stand, valueone, valuetwo) {
 
         expect(valueone).to.equal(1);
         expect(valuetwo).to.equal(2);
@@ -102,7 +101,7 @@ describe('stand-in', function () {
 
       var foo = {
         bar: function () {
-          
+
           return false;
         }
       };
@@ -120,6 +119,19 @@ describe('stand-in', function () {
 
     });
 
+    it('provides the stand-in object as the first parameter to the function', function (done) {
+
+      var log = StandIn.replace(console, 'log', function (stand, value) {
+
+        expect(value).to.equal('test');
+        expect(stand).to.deep.equal(log);
+
+        stand.restore();
+        done();
+      });
+
+      console.log('test');
+    });
   });
 
   describe('assertions', function () {
@@ -128,7 +140,7 @@ describe('stand-in', function () {
 
       expect(function() {
 
-        StandIn.replace(null)
+        StandIn.replace(null);
       }).to.throw('obj must be defined');
 
       done();
@@ -138,7 +150,7 @@ describe('stand-in', function () {
 
       expect(function() {
 
-        StandIn.replace(1)
+        StandIn.replace(1);
       }).to.throw('obj must be an object');
 
       done();
@@ -201,20 +213,22 @@ describe('stand-in', function () {
 
     it('allows duplication methods if obj is a new instance', function (done) {
 
+      var bar = function (value) {
+        console.log(value);
+      };
+
       for (var i = 0; i < 10; ++i) {
         var x = {};
-        x.foo = function (value) {
-          console.log(value);
-        };
+        x.bar = bar;
         x.value = i;
 
-        var foo = StandIn.replace(x, 'foo', function (value) {
+        StandIn.replace(x, 'bar', function (stand, value) {
 
           expect(value).to.equal(i);
           expect(this.value).to.equal(i);
-          foo.restore();
+          stand.restore();
         });
-        x.foo(i);
+        x.bar(i);
       }
 
       done();

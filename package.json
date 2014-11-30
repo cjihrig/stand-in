@@ -8,7 +8,7 @@
   },
   "main": "index.js",
   "scripts": {
-    "test": "node node_modules/.bin/lab -cv -t 100"
+    "test": "node node_modules/.bin/lab -cv -t 100 -a code -L"
   },
   "keywords": [
     "testing",
@@ -20,9 +20,10 @@
   "author": "Adam Bretz",
   "license": "ISC",
   "devDependencies": {
-    "lab": "^4.x.x"
+    "lab": "5.x.x",
+    "code" : "1.x.x"
   },
   "dependencies": {
-    "objhash": "^1.0.x"
+    "objhash": "1.0.x"
   }
 }

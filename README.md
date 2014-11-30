@@ -12,7 +12,7 @@ Often when unit testing, it is helpful to capture or replace function calls with
 ```javascript
 var standin = require('stand-in');
 var assert = require('assert');
-var log = standin.replace(console, 'log', function (value) {
+var log = standin.replace(console, 'log', function (stand, value) {
 
   assert.strictEqual(value, 'test data', 'value should equal test data');
   log.restore();
@@ -21,7 +21,12 @@ var log = standin.replace(console, 'log', function (value) {
 console.log('test data');
 ```
 
-- `replace(obj, method, fn)` - replaces `obj[method]` with `fn`. Returns a `standin` object:
+- `replace(obj, method, fn)` - replaces `obj[method]` with `fn` where:
+  - `obj` - object that has the method to replace. Will be used at `this` pointer inside `fn`.
+  - `method` - string name of the function to replace.
+  - `fn` - function to replace `obj[method]` with. The first argument to this function will be a stand-in object. This is helpful if you don't want to create a holding variable.
+
+Returns a `stand-in` object:
   - `restore()` - restores the original `obj[method]` to the previous function. Generally, this will restore the method back to the initial value.
   - `original` - a handle to the original method in case you need to conditionally call it.
 
