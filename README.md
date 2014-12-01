@@ -16,7 +16,7 @@ var assert = require('assert');
 var log = standin.replace(console, 'log', function (stand, value) {
 
   assert.strictEqual(value, 'test data', 'value should equal test data');
-  log.restore();
+  stand.restore();
 });
 
 console.log('test data');
