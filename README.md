@@ -1,7 +1,7 @@
 # stand-in
 Method replacement and testing utility
 
-[![build status](https://travis-ci.org/arb/stand-in.svg?branch=master)](https://travis-ci.org/arb/stand-in) | 
+[![build status](https://travis-ci.org/arb/stand-in.svg?branch=master)](https://travis-ci.org/arb/stand-in)
 [![npm version](https://img.shields.io/npm/v/stand-in.svg)](https://www.npmjs.org/package/stand-in)
 
 ## Description
