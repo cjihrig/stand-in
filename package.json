@@ -4,11 +4,11 @@
   "description": "Method replacement and testing utility",
   "repository": {
     "type": "git",
-    "url": "git://github.com/arb/stand-in.git"
+    "url": "git://github.com/continuationlabs/stand-in.git"
   },
   "main": "index.js",
   "scripts": {
-    "test": "node node_modules/.bin/lab -cv -t 100 -a code -L"
+    "test": "lab -cv -t 100 -a code -L"
   },
   "keywords": [
     "testing",
@@ -17,8 +17,6 @@
     "mock",
     "stub"
   ],
-  "author": "Adam Bretz",
-  "license": "ISC",
   "devDependencies": {
     "lab": "5.x.x",
     "code": "1.x.x"
