@@ -1,4 +1,4 @@
-//Load modules
+// Load modules
 
 var Code = require('code');
 var Lab = require('lab');
@@ -11,13 +11,9 @@ var it = lab.it;
 var expect = Code.expect;
 
 describe('stand-in', function () {
-
   describe('replace', function () {
-
     it('replaces a defined method', function (done) {
-
       var log = StandIn.replace(console, 'log', function (stand, value) {
-
         expect(value).to.equal('test');
         log.restore();
         done();
@@ -27,16 +23,13 @@ describe('stand-in', function () {
     });
 
     it('correctly restores a replaced method', function (done) {
-
       var foo = {
         bar: function (valueone, valuetwo) {
-
           console.log('%s, %s');
         }
       };
 
       var replace = StandIn.replace(foo, 'bar', function (stand, valueone, valuetwo) {
-
         expect(valueone).to.equal(1);
         expect(valuetwo).to.equal(2);
 
@@ -44,25 +37,20 @@ describe('stand-in', function () {
 
         expect(foo.bar).to.deep.equal(foo.bar);
         done();
-
       });
 
-      foo.bar(1,2);
-
+      foo.bar(1, 2);
     });
 
     it('uses the correct this context', function (done) {
-
       var foo = {
         value: 55,
         bar: function (valueone, valuetwo) {
-
           console.log('%s,%s');
         }
       };
 
       var replace = StandIn.replace(foo, 'bar', function (stand, valueone, valuetwo) {
-
         expect(valueone).to.equal(1);
         expect(valuetwo).to.equal(2);
         expect(this.value).to.equal(55);
@@ -71,15 +59,12 @@ describe('stand-in', function () {
 
         expect(foo.bar).to.deep.equal(foo.bar);
         done();
-
       });
 
-      foo.bar(1,2);
-
+      foo.bar(1, 2);
     });
 
     it('provides a mechanism to use the original method', function (done) {
-
       var foo = {
         bar: function () {
           return false;
@@ -87,27 +72,22 @@ describe('stand-in', function () {
       };
 
       var replace = StandIn.replace(foo, 'bar', function () {
-
         expect(replace.original()).to.equal(false);
         replace.restore();
         done();
       });
 
       foo.bar(1);
-
     });
 
     it('prevents developers for blowing away the original function', function (done) {
-
       var foo = {
         bar: function () {
-
           return false;
         }
       };
 
       var replace = StandIn.replace(foo, 'bar', function () {
-
         delete replace.original;
         replace.original = undefined;
         expect(replace.original()).to.equal(false);
@@ -116,13 +96,10 @@ describe('stand-in', function () {
       });
 
       foo.bar(1);
-
     });
 
     it('provides the stand-in object as the first parameter to the function', function (done) {
-
       var log = StandIn.replace(console, 'log', function (stand, value) {
-
         expect(value).to.equal('test');
         expect(stand).to.deep.equal(log);
 
@@ -135,11 +112,8 @@ describe('stand-in', function () {
   });
 
   describe('assertions', function () {
-
     it('throws an error if obj is not defined', function (done) {
-
-      expect(function() {
-
+      expect(function () {
         StandIn.replace(null);
       }).to.throw('obj must be defined');
 
@@ -147,9 +121,7 @@ describe('stand-in', function () {
     });
 
     it('throws an error if obj is not an object', function (done) {
-
-      expect(function() {
-
+      expect(function () {
         StandIn.replace(1);
       }).to.throw('obj must be an object');
 
@@ -157,12 +129,9 @@ describe('stand-in', function () {
     });
 
     it('throws an error if obj[function] is undefined', function (done) {
-
-      expect(function() {
-
+      expect(function () {
         StandIn.replace(console, 'foo');
       }).to.throw('method must be a valid function of obj');
-
 
       done();
     });
@@ -172,8 +141,7 @@ describe('stand-in', function () {
         bar: 1
       };
 
-      expect(function() {
-
+      expect(function () {
         StandIn.replace(foo, 'bar');
       }).to.throw('method must be a valid function of obj');
 
@@ -182,37 +150,31 @@ describe('stand-in', function () {
 
     it('throws an error if fn is not a function', function (done) {
       var foo = {
-        bar: function() {}
+        bar: function () {}
       };
 
-      expect(function() {
-
+      expect(function () {
         StandIn.replace(foo, 'bar', 1);
       }).to.throw('fn must be a function object');
 
       done();
     });
-
   });
 
   describe('duplication', function () {
-
     it('throws an error if you try to replace without restoring on the same object', function (done) {
-
       var log = StandIn.replace(console, 'log', function (value) {});
 
       expect(function () {
-        var log2 = StandIn.replace(console, 'log', function (value) {});
+        StandIn.replace(console, 'log', function (value) {});
       }).to.throw('there is already a replace for "obj"[log]');
 
       log.restore();
 
       done();
-
     });
 
     it('allows duplication methods if obj is a new instance', function (done) {
-
       var bar = function (value) {
         console.log(value);
       };
@@ -223,7 +185,6 @@ describe('stand-in', function () {
         x.value = i;
 
         StandIn.replace(x, 'bar', function (stand, value) {
-
           expect(value).to.equal(i);
           expect(this.value).to.equal(i);
           stand.restore();
@@ -233,6 +194,5 @@ describe('stand-in', function () {
 
       done();
     });
-
   });
 });
