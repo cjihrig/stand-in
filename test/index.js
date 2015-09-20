@@ -80,24 +80,6 @@ describe('stand-in', function () {
       foo.bar(1);
     });
 
-    it('prevents developers for blowing away the original function', function (done) {
-      var foo = {
-        bar: function () {
-          return false;
-        }
-      };
-
-      var replace = StandIn.replace(foo, 'bar', function () {
-        delete replace.original;
-        replace.original = undefined;
-        expect(replace.original()).to.equal(false);
-        replace.restore();
-        done();
-      });
-
-      foo.bar(1);
-    });
-
     it('provides the stand-in object as the first parameter to the function', function (done) {
       var log = StandIn.replace(console, 'log', function (stand, value) {
         expect(value).to.equal('test');
@@ -178,6 +160,7 @@ describe('stand-in', function () {
       var bar = function (value) {
         console.log(value);
       };
+      var error = StandIn.replace(console, 'error', function (stand, value) {});
 
       for (var i = 0; i < 10; ++i) {
         var x = {};
@@ -192,6 +175,22 @@ describe('stand-in', function () {
         x.bar(i);
       }
 
+      error.restore();
+      done();
+    });
+
+    it('allows multiple methods to be replaced on a single instance', function (done) {
+      StandIn.replace(console, 'log', function (stand, value) {
+        expect(value).to.equal('foo');
+        stand.restore();
+      });
+      StandIn.replace(console, 'error', function (stand, value) {
+        expect(value).to.equal('bar');
+        stand.restore();
+      });
+
+      console.log('foo');
+      console.error('bar');
       done();
     });
   });
