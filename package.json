@@ -6,9 +6,10 @@
     "type": "git",
     "url": "git://github.com/continuationlabs/stand-in.git"
   },
-  "main": "index.js",
+  "main": "lib/index.js",
+  "license": "MIT",
   "scripts": {
-    "test": "lab -cv -t 100 -a code -L"
+    "test": "semistandard && lab -t 100 -va code"
   },
   "keywords": [
     "testing",
@@ -18,10 +19,8 @@
     "stub"
   ],
   "devDependencies": {
+    "code": "1.x.x",
     "lab": "5.x.x",
-    "code": "1.x.x"
-  },
-  "dependencies": {
-    "objhash": "1.0.x"
+    "semistandard": "7.0.x"
   }
 }
