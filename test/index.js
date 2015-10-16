@@ -25,7 +25,7 @@ describe('stand-in', function () {
     it('correctly restores a replaced method', function (done) {
       var foo = {
         bar: function (valueone, valuetwo) {
-          console.log('%s, %s');
+          throw new Error('this is a test error');
         }
       };
 
@@ -35,7 +35,7 @@ describe('stand-in', function () {
 
         replace.restore();
 
-        expect(foo.bar).to.deep.equal(foo.bar);
+        expect(foo.bar).to.throw(Error, 'this is a test error');
         done();
       });
 
