@@ -5,7 +5,7 @@ Method replacement and testing utility
 [![npm version](https://img.shields.io/npm/v/stand-in.svg)](https://www.npmjs.org/package/stand-in)
 [![Dependencies](https://img.shields.io/david/continuationlabs/stand-in.svg)](https://github.com/continuationlabs/stand-in)
 
-[![js-semistandard-style](https://cdn.rawgit.com/flet/semistandard/master/badge.svg)](https://github.com/Flet/semistandard)
+[![belly-button-style](https://cdn.rawgit.com/continuationlabs/belly-button/master/badge.svg)](https://github.com/continuationlabs/belly-button)
 
 ## Description
 
