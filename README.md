@@ -27,7 +27,7 @@ console.log('test data');
 
 - `replace(obj, method, fn)` - replaces `obj[method]` with `fn` where:
   - `obj` - object that has the method to replace. Will be used at `this` pointer inside `fn`.
-  - `method` - string name of the function to replace.
+  - `method` - string path to the function to replace. Supports deep paths via "foo.bar.baz".
   - `fn` - function to replace `obj[method]` with. The first argument to this function will be a stand-in object. This is helpful if you don't want to create a holding variable.
 
 Returns a `stand-in` object:

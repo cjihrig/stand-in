@@ -91,6 +91,26 @@ describe('stand-in', function () {
 
       console.log('test');
     });
+
+    it('supports deep paths for replace', function (done) {
+      var x = {
+        foo: {
+          bar: {
+            baz: function (value) {
+              throw new Error('you are inside baz.');
+            }
+          }
+        }
+      };
+
+      StandIn.replace(x, 'foo.bar.baz', function (stand, value) {
+        stand.restore();
+        expect(value).to.be.true();
+        expect(x.foo.bar.baz).to.throw(Error, 'you are inside baz.');
+        done();
+      });
+      x.foo.bar.baz(true);
+    });
   });
 
   describe('assertions', function () {

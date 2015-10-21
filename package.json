@@ -22,5 +22,8 @@
     "code": "1.x.x",
     "lab": "5.x.x",
     "semistandard": "7.0.x"
+  },
+  "dependencies": {
+    "object-path": "0.9.x"
   }
 }
