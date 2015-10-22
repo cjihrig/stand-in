@@ -5,7 +5,7 @@ Method replacement and testing utility
 [![npm version](https://img.shields.io/npm/v/stand-in.svg)](https://www.npmjs.org/package/stand-in)
 [![Dependencies](https://img.shields.io/david/continuationlabs/stand-in.svg)](https://github.com/continuationlabs/stand-in)
 
-[![js-semistandard-style](https://cdn.rawgit.com/flet/semistandard/master/badge.svg)](https://github.com/Flet/semistandard)
+[![belly-button-style](https://cdn.rawgit.com/continuationlabs/belly-button/master/badge.svg)](https://github.com/continuationlabs/belly-button)
 
 ## Description
 
@@ -27,7 +27,7 @@ console.log('test data');
 
 - `replace(obj, method, fn)` - replaces `obj[method]` with `fn` where:
   - `obj` - object that has the method to replace. Will be used at `this` pointer inside `fn`.
-  - `method` - string name of the function to replace.
+  - `method` - string path to the function to replace. Supports deep paths via "foo.bar.baz".
   - `fn` - function to replace `obj[method]` with. The first argument to this function will be a stand-in object. This is helpful if you don't want to create a holding variable.
 
 Returns a `stand-in` object:

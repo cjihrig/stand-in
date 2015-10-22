@@ -1,3 +1,5 @@
+'use strict';
+
 // This example uses Lab because that's the testing framework for the project.
 // However, it could just as easily be any other framework
 
