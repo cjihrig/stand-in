@@ -19,7 +19,7 @@
     "stub"
   ],
   "devDependencies": {
-    "belly-button": "^1.0.0",
+    "belly-button": "1.x.x",
     "code": "1.x.x",
     "lab": "6.x.x"
   },
