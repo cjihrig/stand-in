@@ -24,6 +24,7 @@
     "lab": "6.x.x"
   },
   "dependencies": {
-    "object-path": "0.9.x"
+    "lodash.get": "3.7.x",
+    "lodash.set": "3.7.x"
   }
 }

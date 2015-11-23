@@ -112,6 +112,24 @@ describe('stand-in', function () {
       });
       x.foo.bar.baz(true);
     });
+
+    it('supports replacing prototype methods', function (done) {
+      var Person = function (name) {
+        this.name = name;
+      };
+      Person.prototype.print = function (value) {
+        throw new Error(this.name);
+      };
+
+      StandIn.replace(Person, 'prototype.print', function (stand) {
+        stand.restore();
+      });
+
+      var x = new Person('adam');
+      expect(x.print).to.not.throw();
+      expect(x.print).to.throw(Error);
+      done();
+    });
   });
 
   describe('assertions', function () {
@@ -126,7 +144,7 @@ describe('stand-in', function () {
     it('throws an error if obj is not an object', function (done) {
       expect(function () {
         StandIn.replace(1);
-      }).to.throw('obj must be an object');
+      }).to.throw('obj must be an object or a constructor');
 
       done();
     });
@@ -134,7 +152,7 @@ describe('stand-in', function () {
     it('throws an error if obj[function] is undefined', function (done) {
       expect(function () {
         StandIn.replace(console, 'foo');
-      }).to.throw('method must be a valid function of obj');
+      }).to.throw('path must be a valid function of obj');
 
       done();
     });
@@ -146,7 +164,7 @@ describe('stand-in', function () {
 
       expect(function () {
         StandIn.replace(foo, 'bar');
-      }).to.throw('method must be a valid function of obj');
+      }).to.throw('path must be a valid function of obj');
 
       done();
     });
