@@ -130,6 +130,25 @@ describe('stand-in', function () {
       expect(x.print).to.throw(Error);
       done();
     });
+
+    it('correctly restores a replaced prototype method', function (done) {
+      function Foo (val) {
+        this.val = val;
+      }
+      Foo.prototype.getVal = function () {
+        return this.val;
+      };
+
+      var stand = StandIn.replace(Foo, 'prototype.getVal', function (stand) {
+        return 'stand';
+      });
+
+      stand.restore();
+
+      var foo = new Foo('bar');
+      expect(foo.getVal()).to.equal('bar');
+      done();
+    });
   });
 
   describe('assertions', function () {
