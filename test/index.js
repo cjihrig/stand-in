@@ -16,6 +16,7 @@ describe('stand-in', function () {
     it('replaces a defined method', function (done) {
       var log = StandIn.replace(console, 'log', function (stand, value) {
         expect(value).to.equal('test');
+        expect(stand.invocations).to.equal(1);
         log.restore();
         done();
       });
@@ -148,6 +149,24 @@ describe('stand-in', function () {
       var foo = new Foo('bar');
       expect(foo.getVal()).to.equal('bar');
       done();
+    });
+
+    it('automatically restores a patched function', function (done) {
+      var called = 0;
+      StandIn.replace(console, 'log', function (stand, value) {
+        called++;
+        expect(stand.invocations).to.equal(called);
+
+        if (value === 'baz') {
+          expect(stand.invocations).to.equal(3);
+          expect(console.log).to.equal(stand.original);
+          done();
+        }
+      }, { restoreAfter: 3 });
+
+      console.log('foo');
+      console.log('bar');
+      console.log('baz');
     });
   });
 
