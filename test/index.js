@@ -124,10 +124,11 @@ describe('stand-in', function () {
 
       StandIn.replace(Person, 'prototype.print', function (stand) {
         stand.restore();
+        return this.name;
       });
 
       var x = new Person('adam');
-      expect(x.print).to.not.throw();
+      expect(x.print()).to.equal('adam');
       expect(x.print).to.throw(Error);
       done();
     });
@@ -151,22 +152,25 @@ describe('stand-in', function () {
       done();
     });
 
-    it('automatically restores a patched function', function (done) {
-      var called = 0;
-      StandIn.replace(console, 'log', function (stand, value) {
-        called++;
-        expect(stand.invocations).to.equal(called);
+    it('only activate the stand for certain invocations', function (done) {
+      var obj = { method: function () { return -1; } };
+      var calls = 0;
+      var stand = StandIn.replace(obj, 'method', function (stand, value) {
+        calls++;
+        return value;
+      }, { startOn: 2, stopAfter: 3 });
 
-        if (value === 'baz') {
-          expect(stand.invocations).to.equal(3);
-          expect(console.log).to.equal(stand.original);
-          done();
-        }
-      }, { restoreAfter: 3 });
-
-      console.log('foo');
-      console.log('bar');
-      console.log('baz');
+      expect(obj.method).to.not.equal(stand.original);
+      expect([
+        obj.method(1),
+        obj.method(2),
+        obj.method(3),
+        obj.method(4)
+      ]).to.deep.equal([-1, 2, 3, -1]);
+      expect(obj.method).to.equal(stand.original);
+      expect(stand.invocations).to.equal(3);
+      expect(calls).to.equal(2);
+      done();
     });
   });
 
