@@ -124,10 +124,11 @@ describe('stand-in', function () {
 
       StandIn.replace(Person, 'prototype.print', function (stand) {
         stand.restore();
+        return this.name;
       });
 
       var x = new Person('adam');
-      expect(x.print).to.not.throw();
+      expect(x.print()).to.equal('adam');
       expect(x.print).to.throw(Error);
       done();
     });
