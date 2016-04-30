@@ -16,6 +16,7 @@ describe('stand-in', function () {
     it('replaces a defined method', function (done) {
       var log = StandIn.replace(console, 'log', function (stand, value) {
         expect(value).to.equal('test');
+        expect(stand.invocations).to.equal(1);
         log.restore();
         done();
       });
@@ -123,10 +124,11 @@ describe('stand-in', function () {
 
       StandIn.replace(Person, 'prototype.print', function (stand) {
         stand.restore();
+        return this.name;
       });
 
       var x = new Person('adam');
-      expect(x.print).to.not.throw();
+      expect(x.print()).to.equal('adam');
       expect(x.print).to.throw(Error);
       done();
     });
@@ -147,6 +149,27 @@ describe('stand-in', function () {
 
       var foo = new Foo('bar');
       expect(foo.getVal()).to.equal('bar');
+      done();
+    });
+
+    it('only activate the stand for certain invocations', function (done) {
+      var obj = { method: function () { return -1; } };
+      var calls = 0;
+      var stand = StandIn.replace(obj, 'method', function (stand, value) {
+        calls++;
+        return value;
+      }, { startOn: 2, stopAfter: 3 });
+
+      expect(obj.method).to.not.equal(stand.original);
+      expect([
+        obj.method(1),
+        obj.method(2),
+        obj.method(3),
+        obj.method(4)
+      ]).to.deep.equal([-1, 2, 3, -1]);
+      expect(obj.method).to.equal(stand.original);
+      expect(stand.invocations).to.equal(3);
+      expect(calls).to.equal(2);
       done();
     });
   });
