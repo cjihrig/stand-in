@@ -153,7 +153,7 @@ describe('stand-in', function () {
     });
 
     it('only activate the stand for certain invocations', function (done) {
-      var obj = { method: function () { return -1; } };
+      var obj = { method: function (value) { return -1 * value; } };
       var calls = 0;
       var stand = StandIn.replace(obj, 'method', function (stand, value) {
         calls++;
@@ -166,7 +166,7 @@ describe('stand-in', function () {
         obj.method(2),
         obj.method(3),
         obj.method(4)
-      ]).to.deep.equal([-1, 2, 3, -1]);
+      ]).to.deep.equal([-1, 2, 3, -4]);
       expect(obj.method).to.equal(stand.original);
       expect(stand.invocations).to.equal(3);
       expect(calls).to.equal(2);
