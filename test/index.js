@@ -1,20 +1,20 @@
 'use strict';
 // Load modules
 
-var Code = require('code');
-var Lab = require('lab');
-var lab = exports.lab = Lab.script();
-var StandIn = require('../');
+const Code = require('code');
+const Lab = require('lab');
+const lab = exports.lab = Lab.script();
+const StandIn = require('../');
 
 // Declare test aliases
-var describe = lab.describe;
-var it = lab.it;
-var expect = Code.expect;
+const describe = lab.describe;
+const it = lab.it;
+const expect = Code.expect;
 
 describe('stand-in', function () {
   describe('replace', function () {
     it('replaces a defined method', function (done) {
-      var log = StandIn.replace(console, 'log', function (stand, value) {
+      const log = StandIn.replace(console, 'log', function (stand, value) {
         expect(value).to.equal('test');
         expect(stand.invocations).to.equal(1);
         log.restore();
@@ -25,13 +25,13 @@ describe('stand-in', function () {
     });
 
     it('correctly restores a replaced method', function (done) {
-      var foo = {
+      const foo = {
         bar: function (valueone, valuetwo) {
           throw new Error('this is a test error');
         }
       };
 
-      var replace = StandIn.replace(foo, 'bar', function (stand, valueone, valuetwo) {
+      const replace = StandIn.replace(foo, 'bar', function (stand, valueone, valuetwo) {
         expect(valueone).to.equal(1);
         expect(valuetwo).to.equal(2);
 
@@ -45,14 +45,14 @@ describe('stand-in', function () {
     });
 
     it('uses the correct this context', function (done) {
-      var foo = {
+      const foo = {
         value: 55,
         bar: function (valueone, valuetwo) {
           console.log('%s,%s');
         }
       };
 
-      var replace = StandIn.replace(foo, 'bar', function (stand, valueone, valuetwo) {
+      const replace = StandIn.replace(foo, 'bar', function (stand, valueone, valuetwo) {
         expect(valueone).to.equal(1);
         expect(valuetwo).to.equal(2);
         expect(this.value).to.equal(55);
@@ -67,13 +67,13 @@ describe('stand-in', function () {
     });
 
     it('provides a mechanism to use the original method', function (done) {
-      var foo = {
+      const foo = {
         bar: function () {
           return false;
         }
       };
 
-      var replace = StandIn.replace(foo, 'bar', function () {
+      const replace = StandIn.replace(foo, 'bar', function () {
         expect(replace.original()).to.equal(false);
         replace.restore();
         done();
@@ -83,9 +83,9 @@ describe('stand-in', function () {
     });
 
     it('provides the stand-in object as the first parameter to the function', function (done) {
-      var log = StandIn.replace(console, 'log', function (stand, value) {
+      const log = StandIn.replace(console, 'log', function (stand, value) {
         expect(value).to.equal('test');
-        expect(stand).to.deep.equal(log);
+        expect(stand).to.equal(log);
 
         stand.restore();
         done();
@@ -95,7 +95,7 @@ describe('stand-in', function () {
     });
 
     it('supports deep paths for replace', function (done) {
-      var x = {
+      const x = {
         foo: {
           bar: {
             baz: function (value) {
@@ -115,7 +115,7 @@ describe('stand-in', function () {
     });
 
     it('supports replacing prototype methods', function (done) {
-      var Person = function (name) {
+      const Person = function (name) {
         this.name = name;
       };
       Person.prototype.print = function (value) {
@@ -127,7 +127,7 @@ describe('stand-in', function () {
         return this.name;
       });
 
-      var x = new Person('adam');
+      const x = new Person('adam');
       expect(x.print()).to.equal('adam');
       expect(x.print).to.throw(Error);
       done();
@@ -141,21 +141,21 @@ describe('stand-in', function () {
         return this.val;
       };
 
-      var stand = StandIn.replace(Foo, 'prototype.getVal', function (stand) {
+      const stand = StandIn.replace(Foo, 'prototype.getVal', function (stand) {
         return 'stand';
       });
 
       stand.restore();
 
-      var foo = new Foo('bar');
+      const foo = new Foo('bar');
       expect(foo.getVal()).to.equal('bar');
       done();
     });
 
     it('only activate the stand for certain invocations', function (done) {
-      var obj = { method: function (value) { return -1 * value; } };
-      var calls = 0;
-      var stand = StandIn.replace(obj, 'method', function (stand, value) {
+      const obj = { method: function (value) { return -1 * value; } };
+      let calls = 0;
+      const stand = StandIn.replace(obj, 'method', function (stand, value) {
         calls++;
         return value;
       }, { startOn: 2, stopAfter: 3 });
@@ -200,7 +200,7 @@ describe('stand-in', function () {
     });
 
     it('throws an error if obj[function] is not a function', function (done) {
-      var foo = {
+      const foo = {
         bar: 1
       };
 
@@ -212,7 +212,7 @@ describe('stand-in', function () {
     });
 
     it('throws an error if fn is not a function', function (done) {
-      var foo = {
+      const foo = {
         bar: function () {}
       };
 
@@ -226,7 +226,7 @@ describe('stand-in', function () {
 
   describe('duplication', function () {
     it('throws an error if you try to replace without restoring on the same object', function (done) {
-      var log = StandIn.replace(console, 'log', function (value) {});
+      const log = StandIn.replace(console, 'log', function (value) {});
 
       expect(function () {
         StandIn.replace(console, 'log', function (value) {});
@@ -238,13 +238,13 @@ describe('stand-in', function () {
     });
 
     it('allows duplication methods if obj is a new instance', function (done) {
-      var bar = function (value) {
+      const bar = function (value) {
         console.log(value);
       };
-      var error = StandIn.replace(console, 'error', function (stand, value) {});
+      const error = StandIn.replace(console, 'error', function (stand, value) {});
 
-      for (var i = 0; i < 10; ++i) {
-        var x = {};
+      for (let i = 0; i < 10; ++i) {
+        const x = {};
         x.bar = bar;
         x.value = i;
 
