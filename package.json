@@ -20,12 +20,12 @@
   ],
   "devDependencies": {
     "belly-button": "2.x.x",
-    "code": "1.x.x",
-    "lab": "6.x.x"
+    "code": "2.x.x",
+    "lab": "10.x.x"
   },
   "dependencies": {
-    "lodash.get": "3.7.x",
+    "lodash.get": "4.2.x",
     "lodash.merge": "4.3.x",
-    "lodash.set": "3.7.x"
+    "lodash.set": "4.1.x"
   }
 }
