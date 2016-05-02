@@ -85,7 +85,7 @@ describe('stand-in', function () {
     it('provides the stand-in object as the first parameter to the function', function (done) {
       var log = StandIn.replace(console, 'log', function (stand, value) {
         expect(value).to.equal('test');
-        expect(stand).to.deep.equal(log);
+        expect(stand).to.equal(log);
 
         stand.restore();
         done();
