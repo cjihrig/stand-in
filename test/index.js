@@ -58,8 +58,6 @@ describe('stand-in', function () {
         expect(this.value).to.equal(55);
 
         replace.restore();
-
-        expect(foo.bar).to.deep.equal(foo.bar);
         done();
       });
 
@@ -85,7 +83,7 @@ describe('stand-in', function () {
     it('provides the stand-in object as the first parameter to the function', function (done) {
       const log = StandIn.replace(console, 'log', function (stand, value) {
         expect(value).to.equal('test');
-        expect(stand).to.equal(log);
+        expect(stand).to.shallow.equal(log);
 
         stand.restore();
         done();
@@ -166,8 +164,8 @@ describe('stand-in', function () {
         obj.method(2),
         obj.method(3),
         obj.method(4)
-      ]).to.deep.equal([-1, 2, 3, -4]);
-      expect(obj.method).to.equal(stand.original);
+      ]).to.equal([-1, 2, 3, -4]);
+      expect(obj.method).to.shallow.equal(stand.original);
       expect(stand.invocations).to.equal(3);
       expect(calls).to.equal(2);
       done();
