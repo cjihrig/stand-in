@@ -172,6 +172,50 @@ describe('stand-in', function () {
     });
   });
 
+  describe('replaceOnce', function () {
+    it('automatically restores after first call', function (done) {
+      const obj = { method: function (value) { return -1 * value; } };
+      let calls = 0;
+      const stand = StandIn.replaceOnce(obj, 'method', function (stand, value) {
+        calls++;
+        return value;
+      });
+
+      expect(obj.method).to.not.equal(stand.original);
+      expect([
+        obj.method(1),
+        obj.method(2),
+        obj.method(3),
+        obj.method(4)
+      ]).to.equal([1, -2, -3, -4]);
+      expect(obj.method).to.shallow.equal(stand.original);
+      expect(stand.invocations).to.equal(1);
+      expect(calls).to.equal(1);
+      done();
+    });
+
+    it('automatically restores after non-zero startOn value', function (done) {
+      const obj = { method: function (value) { return -1 * value; } };
+      let calls = 0;
+      const stand = StandIn.replaceOnce(obj, 'method', function (stand, value) {
+        calls++;
+        return value;
+      }, { startOn: 2 });
+
+      expect(obj.method).to.not.equal(stand.original);
+      expect([
+        obj.method(1),
+        obj.method(2),
+        obj.method(3),
+        obj.method(4)
+      ]).to.equal([-1, 2, -3, -4]);
+      expect(obj.method).to.shallow.equal(stand.original);
+      expect(stand.invocations).to.equal(2);
+      expect(calls).to.equal(1);
+      done();
+    });
+  });
+
   describe('assertions', function () {
     it('throws an error if obj is not defined', function (done) {
       expect(function () {

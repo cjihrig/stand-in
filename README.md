@@ -37,6 +37,8 @@ Returns a `stand-in` object:
   - `original` - a handle to the original method in case you need to conditionally call it.
   - `invocations` - the number of times the `stand-in` has been called.
 
+`replaceOnce()` can be used to create a one time replacement. It is identical to `replace()`, except the `stopAfter` option will be set automatically to an appropriate value, depending on the value of `startOn`.
+
 ## Note
 
 `replace` tries to prevent users from completely losing a handle to the original method. For example, you will receive an `AssertionError` if you try to replace `console.log` twice without first `restore`ing the function first.
