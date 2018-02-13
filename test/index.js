@@ -317,4 +317,28 @@ describe('stand-in', function () {
       done();
     });
   });
+
+  describe('restoreAll()', () => {
+    it('restores all existing stands', (done) => {
+      const originalLog = console.log;
+      const originalError = console.error;
+
+      StandIn.replace(console, 'log', function (stand, value) {
+        expect(value).to.equal('foo');
+        stand.restore();
+      });
+
+      StandIn.replace(console, 'error', function (stand, value) {
+        expect(value).to.equal('bar');
+        stand.restore();
+      });
+
+      expect(console.log).to.not.shallow.equal(originalLog);
+      expect(console.error).to.not.shallow.equal(originalError);
+      StandIn.restoreAll();
+      expect(console.log).to.shallow.equal(originalLog);
+      expect(console.error).to.shallow.equal(originalError);
+      done();
+    });
+  });
 });
