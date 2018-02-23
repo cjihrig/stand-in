@@ -4,8 +4,8 @@ Method replacement and testing utility
 [![Build Status](https://travis-ci.org/continuationlabs/stand-in.svg?branch=master)](https://travis-ci.org/continuationlabs/stand-in)
 [![npm version](https://img.shields.io/npm/v/stand-in.svg)](https://www.npmjs.org/package/stand-in)
 [![Dependencies](https://img.shields.io/david/continuationlabs/stand-in.svg)](https://github.com/continuationlabs/stand-in)
+[![belly-button-style](https://img.shields.io/badge/eslint-bellybutton-4B32C3.svg)](https://github.com/continuationlabs/belly-button)
 
-[![belly-button-style](https://cdn.rawgit.com/continuationlabs/belly-button/master/badge.svg)](https://github.com/continuationlabs/belly-button)
 
 ## Description
 
